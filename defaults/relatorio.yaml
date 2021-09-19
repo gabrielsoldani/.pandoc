@@ -1,0 +1,12 @@
+to: html5
+template: relatorio
+standalone: true
+filters:
+    - include-code-files/include-code-files.lua
+variables:
+    lang: pt-BR
+    papersize: A4
+    margin-left: 2.54cm
+    margin-right: 2.54cm
+    margin-top: 2.54cm
+    margin-bottom: 2.54cm

@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+:root {
+    --text-color: #333;
+    --font-primary: 'PT Serif', serif;
+    --font-monospace: 'PT Mono', monospace;
+}
+
+html {
+    font-size: 12pt;
+}
+
+body {
+    font-family: 'PT Serif', serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+body {
+    margin: 0 auto;
+    padding: 0;
+    hyphens: auto;
+    word-wrap: break-word;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+}
+
+h2,
+h3,
+h4 {
+    page-break-after: avoid;
+}
+
+.title {
+    margin: 0;
+}
+
+.subtitle {
+    margin-top: 0;
+}
+
+p,
+h2,
+h3 {
+    orphans: 3;
+    widows: 3;
+}
+
+p {
+    margin: 1em 0;
+}
+
+a {
+    color: #333;
+}
+
+a:visited {
+    color: #333;
+}
+
+img {
+    max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 1.4em;
+}
+
+h5,
+h6 {
+    font-size: 1em;
+    font-style: italic;
+}
+
+h6 {
+    font-weight: normal;
+}
+
+ol,
+ul {
+    padding-left: 1.7em;
+    margin-top: 1em;
+}
+
+li>ol,
+li>ul {
+    margin-top: 0;
+}
+
+blockquote {
+    margin: 1em 0;
+    padding-left: 1.7em;
+    border-left: 4px solid #e6e6e6;
+    color: #666;
+}
+
+pre {
+    margin: 1em 0;
+    padding: 1em;
+    overflow: auto;
+}
+
+pre,
+code {
+    font-family: 'PT Mono', monospace;
+    font-size: 0.9rem;
+    background-color: #f8f8f8;
+    border: 1pt solid #e6eaed;
+    border-radius: 3pt;
+    break-before: avoid;
+    break-inside: avoid;
+	hyphens: none;
+}
+
+pre code {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+}
+
+code {
+    padding: 0 2pt 0 2pt;
+}
+
+hr {
+    background-color: #333;
+    border: none;
+    height: 1px;
+    margin: 1em 0;
+}
+
+table {
+    margin: 1em 0;
+    border-collapse: collapse;
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+table caption {
+    margin-bottom: 0.75em;
+}
+
+tbody {
+    margin-top: 0.5em;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+}
+
+th {
+    border-top: 1px solid #333;
+    padding: 0.25em 0.5em 0.25em 0.5em;
+}
+
+td {
+    padding: 0.125em 0.5em 0.25em 0.5em;
+}
+
+header {
+    margin-bottom: 4em;
+    text-align: center;
+}
+
+#TOC li {
+    list-style: none;
+}
+
+#TOC a:not(:hover) {
+    text-decoration: none;
+}
+
+code {
+    white-space: pre-wrap;
+}
+
+span.smallcaps {
+    font-variant: small-caps;
+}
+
+span.underline {
+    text-decoration: underline;
+}
+
+div.column {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+}
+
+div.hanging-indent {
+    margin-left: 1.5em;
+    text-indent: -1.5em;
+}
+
+ul.task-list {
+    list-style: none;
+}
+
+$if(quotes)$
+q {
+    quotes: "“" "”" "‘" "’";
+}
+$endif$
+
+$if(highlighting-css)$
+$highlighting-css$
+$endif$
+
+$if(displaymath-css)$
+.display.math {
+    display: block;
+    text-align: center;
+    margin: 0.5rem auto;
+}
+$endif$
+
+$if(csl-css)$
+div.csl-bib-body {}
+div.csl-entry {
+    clear: both;
+$if(csl-entry-spacing)$
+    margin-bottom: $csl-entry-spacing$;
+$endif$
+}
+
+.hanging div.csl-entry {
+    margin-left:2em;
+    text-indent:-2em;
+}
+
+div.csl-left-margin {
+    min-width:2em;
+    float:left;
+}
+
+div.csl-right-inline {
+    margin-left:2em;
+    padding-left:1em;
+}
+
+div.csl-indent {
+    margin-left: 2em;
+}
+$endif$
+
+pre > code.sourceCode > span {
+    display: inline !important;
+}
