@@ -22,32 +22,40 @@ pandoc.path = require("pandoc.path")
 local unicode_text = require("text")
 
 --
--- Looks for the given filename and opens it.
+-- Reads from the given file name.
 --
 -- The following search order is used:
 --     1. Absolute paths
 --     2. Relative paths to the current working directory.
 --     3. Relative paths to the directory of each input file, in order.
 --
--- On success, returns a file.
+-- On success, returns the contents of the file as a string.
 -- On failure, returns a pair of nil and err, where err is the first error
--- returned by io.open.
+-- returned by a call to io.open.
 --
-local function find_and_open (filename, mode)
+local function read_file (filename)
     -- 1 and 2. Absolute and relative paths
-    local file, err = io.open(filename)
-    if file then
-        return file, nil
+    local file, err = io.open(filename, "r")
+
+    if file == nil then
+        -- 3. Relative paths to directory of each input file
+        for _, input_filename in ipairs(PANDOC_STATE.input_files) do
+            local directory = pandoc.path.directory(input_filename)
+            file = pandoc.system.with_working_directory(directory, function ()
+                return io.open(filename, "r")
+            end)
+        end
     end
-    -- 3. Relative paths to directory of each input file
-    for _, input_filename in ipairs(PANDOC_STATE.input_files) do
-        local directory = pandoc.path.directory(input_filename)
-        file = pandoc.system.with_working_directory(directory, function ()
-            return io.open(filename, mode)
-        end)
-        if file then return file, nil end
+
+    if file == nil then
+        return nil, err
     end
-    return nil, err
+
+    local content = file:read("a")
+
+    file:close()
+
+    return content, nil
 end
 
 --
@@ -79,15 +87,8 @@ local function CodeBlock (elem)
         return class ~= "title"
     end)
 
-    local file, err = find_and_open(filename, "r")
-    assert(file, err)
-
-    local content = ""
-    for line in file:lines("L") do
-        content = content .. line
-    end
-
-    file:close()
+    local content, err = read_file(filename)
+    assert(err == nil, err)
 
     local codeblock = pandoc.CodeBlock(content, elem.attr)
 
