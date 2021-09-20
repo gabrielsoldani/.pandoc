@@ -71,11 +71,36 @@ local function idify (s)
     return unicode_text.lower(id)
 end
 
+--
+-- Wrapper around pandoc.mediabag.fetch that doesn't throw and returns arguments
+-- in a nicer fashion.
+--
+-- On success, returns mimetype, content, nil. The last nil indicates success.
+-- On failure, returns nil, nil, err, where err is the error message.
+--
+local function mediabag_fetch(content_source)
+    local success, mimetype_or_err, content = pcall(
+        pandoc.mediabag.fetch, content_source
+    )
+
+    if not success then
+        return nil, nil, mimetype_or_err
+    end
+
+    -- This doesn't seem to be used and pandoc throws on file not found, but
+    -- the reference manual specifies it so we better handle it.
+    if mimetype == nil and content == nil then
+        return nil, nil, content_source .. ": File not found"
+    end
+
+    return mimetype_or_err, content, nil
+end
+
 local function CodeBlock (elem)
-    local filename = elem.attributes.include
+    local content_source = elem.attributes.include
     local title = elem.attributes.title or elem.classes:includes("title")
 
-    if filename == nil then
+    if content_source == nil then
         return pandoc.CodeBlock(elem.text, elem.attr)
     end
 
@@ -87,13 +112,21 @@ local function CodeBlock (elem)
         return class ~= "title"
     end)
 
-    local content, err = read_file(filename)
+    -- Try the mediabag first.
+    local _, content, err = mediabag_fetch(content_source)
+
+    -- If it didn't work and it's not an URI, try the filesystem.
+    if err ~= nil and content_source:find("^%a[%w%.%-%+]+://") == nil then
+        content, err = read_file(content_source)
+    end
+
+    -- We should have a match by now, otherwise we can't continue.
     assert(err == nil, err)
 
     local codeblock = pandoc.CodeBlock(content, elem.attr)
 
     if title then
-        local header_text = title == true and filename or title
+        local header_text = title == true and content_source or title
         local header = pandoc.Header(6, pandoc.Str(header_text), pandoc.Attr(idify(header_text), {".code--header"}))
         return { header, codeblock }
     end
