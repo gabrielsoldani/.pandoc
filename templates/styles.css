@@ -140,12 +140,12 @@ hr {
 }
 
 table {
-    margin: 1em 0;
+    margin: 1em auto;
     border-collapse: collapse;
-    width: 100%;
     overflow-x: auto;
-    display: block;
+    display: table;
     font-variant-numeric: lining-nums tabular-nums;
+    break-inside: avoid;
 }
 
 table caption {
